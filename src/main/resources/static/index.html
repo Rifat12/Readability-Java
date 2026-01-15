@@ -315,6 +315,7 @@
         };
 
         let showingHistory = false;
+        let historyItems = [];
 
         async function analyze() {
             const text = document.getElementById('text').value.trim();
@@ -433,8 +434,9 @@
                     return;
                 }
 
-                historyList.innerHTML = data.results.map(item => `
-                    <div class="history-item" onclick="showHistoryItem(${JSON.stringify(item).replace(/"/g, '&quot;')})">
+                historyItems = data.results;
+                historyList.innerHTML = data.results.map((item, index) => `
+                    <div class="history-item" data-index="${index}">
                         <div class="history-text">${escapeHtml(item.text)}</div>
                         <div class="history-meta">
                             <span class="history-age">Age ${Math.round(item.averageAge)}</span>
@@ -442,6 +444,13 @@
                         </div>
                     </div>
                 `).join('');
+
+                historyList.querySelectorAll('.history-item').forEach(el => {
+                    el.addEventListener('click', () => {
+                        const index = parseInt(el.dataset.index, 10);
+                        showHistoryItem(historyItems[index]);
+                    });
+                });
             } catch (err) {
                 historyList.innerHTML = '<div class="history-empty">Failed to load history.</div>';
             }
