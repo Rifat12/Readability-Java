@@ -1,6 +1,7 @@
 package readability.api;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -75,7 +76,7 @@ public class ReadabilityController {
                 result.getCharacterCount(),
                 result.getSyllableCount(),
                 result.getPolysyllableCount());
-        Map<String, ScoreDetail> allScores = selectScores(result, List.of(ScoreType.ALL));
+        Map<String, ScoreDetail> allScores = selectScores(result, Collections.singletonList(ScoreType.ALL));
         double averageAge = allScores.values().stream()
                 .mapToInt(ScoreDetail::getAge)
                 .average()

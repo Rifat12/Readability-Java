@@ -132,6 +132,9 @@ public class ReadabilityCalculator {
 
     private int ageFromScore(double score) {
         int level = (int) Math.round(score);
+        if (level <= 0) {
+            return 5;
+        }
         switch (level) {
             case 1:
                 return 6;
@@ -157,10 +160,9 @@ public class ReadabilityCalculator {
                 return 17;
             case 12:
                 return 18;
-            case 13:
-                return 24;
             default:
-                return 0;
+                // Scores 13+ indicate college/graduate level (age 18-24+)
+                return Math.min(18 + (level - 12), 24);
         }
     }
 }
